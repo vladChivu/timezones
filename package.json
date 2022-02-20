@@ -1,4 +1,12 @@
 {
+    "name": "timezones-node-app",
+    "version": "1.0.0",
+    "description": "my first nodejs express app",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "vchivu",
     "dependencies": {
         "country-state-city": "^3.0.1",
         "ejs": "^3.1.6",
