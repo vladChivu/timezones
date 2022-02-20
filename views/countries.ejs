@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countries</title>
+</head>
+<body>
+
+    <div>
+        <p id="con"></p>
+    </div>
+
+<script type="text/javascript">
+    const countriesIN = '<%-JSON.parse(countries)%>';
+    const countriesIN = '<%-JSON.stringify(countries)%>';
+    const countriesT = document.getElementById("con");
+    countriesT.innerText = countriesIN;
+</script>
+
+</body>
+</html>

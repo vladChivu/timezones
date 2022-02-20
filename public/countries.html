@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<title>Countries</title>
+</head>
+
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+        <a class="navbar-brand mr-4" href="/countries">LocateMe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            <a class="nav-item nav-link" href="#">About Us</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+            <a class="nav-item nav-link" href="#">Login</a>
+            <a class="nav-item nav-link" href="#">Register</a>
+            </div>
+        </div>
+        </div>
+    </nav>
+</header>
+<main role="main" class="container">
+    <div class="row">
+        <div id="countriesTag" class="col-md-8">
+
+            <!--this is where we place our countries-->
+
+        </div>
+        <div class="col-md-4">
+        <div class="content-section">
+            <h3>Our Sidebar</h3>
+            <p class='text-muted'>You can put any information here you'd like.
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-light">Latest Posts</li>
+                <li class="list-group-item list-group-item-light">Announcements</li>
+                <li class="list-group-item list-group-item-light">Calendars</li>
+                <li class="list-group-item list-group-item-light">etc</li>
+            </ul>
+            </p>
+        </div>
+        </div>
+    </div>
+    </main>
+
+</body>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+    const SERVER_URL = "http://localhost:8080";
+
+    // We add a function to Date that we can call and add/deduct optional hours and minutes values
+    Date.prototype.addHours = function(h,m) {
+        this.setMinutes(this.getMinutes()+m);
+        this.setHours(this.getHours()+h);
+        return this;
+    }
+
+    // async function to get values from an API (here COUNTRIES) & populate the page with the help of the next function
+    const fetchCountries = async () => {
+        const response = await fetch(`${SERVER_URL}/api/countries`);
+        const countriesObj = await response.json();
+        const parentElement = document.getElementById('countriesTag');
+        console.log(countriesObj.countries);
+        generateHTML(parentElement, countriesObj.countries);
+    }
+
+    // we feed to this function the list of data that we got from the API (COUNTRIES) & create HTML elements
+    //  for each value in that list that we attach to the DOM afterwards
+    const generateHTML = (parentElement, countries) => {
+        let HTML = ``;
+        let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+        countries.forEach((country, i) => {
+            const time = new Date();
+            let h = parseInt(country.hours);
+            let m = parseInt(country.minutes);
+            if (country.operation === "-") {
+                time.addHours(-h, -m);
+            } else {
+                time.addHours(h, m);
+            }
+            const timeString = JSON.stringify(time);
+            const times = timeString.slice(12,17);
+            const date = time.toLocaleDateString("en-US", options);
+            HTML += `
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <a class="mr-2" href="#">${country.name}</a>
+                            <small class="text-muted">${date}</small>
+                        </div>
+                        <h3><a class="article-title" href="#">${times}</a></h3>
+                        <p class="article-content">Timezone: ${country.timezone}</p>
+                    </div>
+                </article>
+                `
+            });
+        parentElement.innerHTML = HTML;
+    };
+
+    fetchCountries();
+</script>
+
+</body>
+</html>
+</html>
