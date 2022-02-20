@@ -66,7 +66,6 @@ function sanitizeCountriesList() {
 }
 console.log("-----------------WORKING------------------------------------------------");
 sanitizeCountriesList();
-// ---------------- RESULTS -------------------------------------
 console.log("-----------------RESULTS------------------------------------------------");
 console.log("Countries list size: " + countriesFiltered.length);
 console.log("-----------------------------------------------------------------");
@@ -94,7 +93,6 @@ function sanitizeCitiesListAndPushToCountry () {
 }
 console.log("-----------------WORKING------------------------------------------------");
 sanitizeCitiesListAndPushToCountry();
-// ---------------- RESULTS -------------------------------------
 console.log("-----------------RESULTS------------------------------------------------");
 console.log("Countries list size: " + countriesFiltered.length);
 console.log("-----------------------------------------------------------------");
@@ -135,6 +133,6 @@ app.get("/countries", (req, res) => {
 //     });
 // });
 
-app.listen(8080, () => { 
-    console.log("The server is running on port", 8080);
+app.listen(() => { 
+    console.log("The server is running");
 });
