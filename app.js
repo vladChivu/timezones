@@ -133,6 +133,6 @@ app.get("/countries", (req, res) => {
 //     });
 // });
 
-app.listen(() => { 
-    console.log("The server is running");
+app.listen(process.env.PORT || 5000, () => { 
+    console.log("The server is running on port: " + process.env.PORT);
 });
